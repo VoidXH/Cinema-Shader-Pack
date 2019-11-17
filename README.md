@@ -17,7 +17,14 @@ The supplied shaders can be grouped by the order they should be applied on the v
    Mergers combine split images. Only one merger for the given source and target format can be applied in the shader chain.
    * [3D to 2D - OU](./Shaders/3D%20to%202D%20-%20OU.hlsl): Left eye retain for half-size over-under 3D content
    * [3D to 2D - SBS](./Shaders/3D%20to%202D%20-%20SBS.hlsl): Left eye retain for half-size side-by-side 3D content
-   * [Anaglyph 3D - SBS to red-cyan](./Shaders/Anaglyph%203D%20-%20SBS%20to%20red-cyan.hlsl): Prepare side-by-side 3D content for anaglyph glasses
+   * [Anaglyph 3D - OU to red-blue](./Shaders/Anaglyph%203D%20-%20OU%20to%20red-blue.hlsl): Prepare over-under 3D content for red-blue glasses
+   * [Anaglyph 3D - OU to red-cyan](./Shaders/Anaglyph%203D%20-%20OU%20to%20red-cyan.hlsl): Prepare over-under 3D content for red-cyan glasses
+   * [Anaglyph 3D - OU to red-green](./Shaders/Anaglyph%203D%20-%20OU%20to%20red-green.hlsl): Prepare over-under 3D content for red-green glasses
+   * [Anaglyph 3D - OU to trioscopic](./Shaders/Anaglyph%203D%20-%20OU%20to%20trioscopic.hlsl): Prepare over-under 3D content for trioscopic glasses
+   * [Anaglyph 3D - SBS to red-blue](./Shaders/Anaglyph%203D%20-%20SBS%20to%20red-blue.hlsl): Prepare side-by-side 3D content for red-blue glasses
+   * [Anaglyph 3D - SBS to red-cyan](./Shaders/Anaglyph%203D%20-%20SBS%20to%20red-cyan.hlsl): Prepare side-by-side 3D content for red-cyan glasses
+   * [Anaglyph 3D - SBS to red-green](./Shaders/Anaglyph%203D%20-%20SBS%20to%20red-green.hlsl): Prepare side-by-side 3D content for red-green glasses
+   * [Anaglyph 3D - SBS to trioscopic](./Shaders/Anaglyph%203D%20-%20SBS%20to%20trioscopic.hlsl): Prepare side-by-side 3D content for trioscopic glasses
 4. Corrections
    Single-projector or merged image corrections for multiple properties.
    * [Reframe](./Shaders/Reframe.hlsl): Keep content in the screen's largest given area by ratio

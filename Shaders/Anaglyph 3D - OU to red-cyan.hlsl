@@ -4,7 +4,7 @@
  / /   / / __ \/ _ \/ __ `__ \/ __ `/   \__ \/ __ \/ __ `/ __  / _ \/ ___/  / /_/ / __ `/ ___/ //_/
 / /___/ / / / /  __/ / / / / / /_/ /   ___/ / / / / /_/ / /_/ /  __/ /     / ____/ /_/ / /__/ ,<
 \____/_/_/ /_/\___/_/ /_/ /_/\__,_/   /____/_/ /_/\__,_/\__,_/\___/_/     /_/    \__,_/\___/_/|_|
-        http://en.sbence.hu/        Shader: Prepare side-by-side 3D content for red-cyan glasses
+        http://en.sbence.hu/        Shader: Prepare over-under 3D content for red-cyan glasses
 */
 
 // Configuration ---------------------------------------------------------------
@@ -25,9 +25,9 @@ inline float3 dubois(float4 l, float4 r) { // By kazuya2k8 at https://forum.doom
 }
 
 float4 main(float2 tex : TEXCOORD0) : COLOR {
-	tex.x *= .5;
+	tex.y *= .5;
   float2 texr = tex;
-  texr.x += .5;
+  texr.y += .5;
   float pixelSize = 1. / width;
 	float3 leftPixel = addDubois < .5 ? float3(tex2D(s0, tex).r, tex2D(s0, texr).gb) : dubois(tex2D(s0, tex), tex2D(s0, texr));
   tex.x += pixelSize;
