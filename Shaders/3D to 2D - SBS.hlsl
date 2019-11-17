@@ -8,8 +8,13 @@
 */
 
 sampler s0;
+float4 p0 : register(c0);
 
-float4 main(float2 tex : TEXCOORD0) : COLOR { // TODO: averaging for middle pixels
+#define width (p0[0])
+
+float4 main(float2 tex : TEXCOORD0) : COLOR {
 	tex.x *= .5;
-	return (tex2D(s0, tex)).rgbb;
+  float3 leftPixel = tex2D(s0, tex).rgb;
+  tex.x += 1. / width;
+	return (tex.x * width) % 1 < .5 ? leftPixel.rgbb : (leftPixel + tex2D(s0, tex).rgb).rgbb * .5;
 }
