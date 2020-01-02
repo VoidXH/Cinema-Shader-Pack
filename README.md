@@ -9,6 +9,7 @@ The supplied shaders can be grouped by the order they should be applied on the v
    * [S-Log to SDR + overexposure](./Shaders/S-Log%20to%20SDR%20+%20overexposure.hlsl): Try to get the SDR part of S-Log HDR content with overexposure as SBS 3D
 2. Split state corrections<br />
    These shaders process already split videos like 3D content, for multiple properties.
+   * [Dual projector convergence - OU](./Shaders/Dual%20projector%20convergence%20-%20OU.hlsl): Simple projector convergence for over-under dual projection (3D or HDR)
    * [Dual projector convergence - SBS](./Shaders/Dual%20projector%20convergence%20-%20SBS.hlsl): Simple projector convergence for side-by-side dual projection (3D or HDR)
    * [Flip eyes - OU](./Shaders/Flip%20eyes%20-%20OU.hlsl): Flip left/right eye image for over-under 3D content
    * [Flip eyes - SBS](./Shaders/Flip%20eyes%20-%20SBS.hlsl): Flip left/right eye image for side-by-side 3D content
