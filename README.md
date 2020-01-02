@@ -12,6 +12,7 @@ The supplied shaders can be grouped by the order they should be applied on the v
    * [Dual projector convergence - SBS](./Shaders/Dual%20projector%20convergence%20-%20SBS.hlsl): Simple projector convergence for side-by-side dual projection (3D or HDR)
    * [Flip eyes - OU](./Shaders/Flip%20eyes%20-%20OU.hlsl): Flip left/right eye image for over-under 3D content
    * [Flip eyes - SBS](./Shaders/Flip%20eyes%20-%20SBS.hlsl): Flip left/right eye image for side-by-side 3D content
+   * [Parallax - OU](./Shaders/Parallax%20-%20OU.hlsl): Parallax correction for over-under 3D content
    * [Parallax - SBS](./Shaders/Parallax%20-%20SBS.hlsl): Parallax correction for side-by-side 3D content
 3. Mergers<br />
    Mergers combine split images. Only one merger for the given source and target format can be applied in the shader chain.
