@@ -27,6 +27,7 @@ The supplied shaders can be grouped by the order they should be applied on the v
    * [Anaglyph 3D - SBS to trioscopic](./Shaders/Anaglyph%203D%20-%20SBS%20to%20trioscopic.hlsl): Prepare side-by-side 3D content for trioscopic glasses
 4. Corrections<br />
    Single-projector or merged image corrections for multiple properties.
+   * [Gamma Correction](./Shaders/Gamma Correction.hlsl): Simple gamma correction
    * [Reframe](./Shaders/Reframe.hlsl): Keep content in the screen's largest given area by ratio
    * [Screen File](./Shaders/Screen%20File.hlsl): 6-point single projector geometry correction
    * [S-Log to SDR](./Shaders/S-Log%20to%20SDR.hlsl): Try to get the SDR part of S-Log HDR content
