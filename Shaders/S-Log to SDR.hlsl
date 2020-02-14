@@ -8,7 +8,7 @@
 */
 
 // Configuration ---------------------------------------------------------------
-const static float peakBrightness = 3000.0; // Peak playback screen brightness in nits
+const static float peakBrightness = 10000.0; // Peak playback screen brightness in nits
 // -----------------------------------------------------------------------------
 
 // Precalculated values
