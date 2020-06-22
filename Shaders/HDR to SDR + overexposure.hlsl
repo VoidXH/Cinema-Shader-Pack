@@ -1,0 +1,49 @@
+/*
+   _______                               _____ __              __             ____             __
+  / ____(_)___  ___  ____ ___  ____ _   / ___// /_  ____ _____/ /__  _____   / __ \____ ______/ /__
+ / /   / / __ \/ _ \/ __ `__ \/ __ `/   \__ \/ __ \/ __ `/ __  / _ \/ ___/  / /_/ / __ `/ ___/ //_/
+/ /___/ / / / /  __/ / / / / / /_/ /   ___/ / / / / /_/ / /_/ /  __/ /     / ____/ /_/ / /__/ ,<
+\____/_/_/ /_/\___/_/ /_/ /_/\__,_/   /____/_/ /_/\__,_/\__,_/\___/_/     /_/    \__,_/\___/_/|_|
+        http://en.sbence.hu/        Shader: Try to get the SDR part of HDR content with overexposure as SBS 3D
+*/
+
+// Configuration ---------------------------------------------------------------
+const static float peakLuminence = 200.0; // Peak playback screen luminance in nits
+// -----------------------------------------------------------------------------
+
+// Precalculated values
+const static float peakGain = log(10000.0 / peakLuminence);
+
+sampler s0;
+
+inline float luma(float3 pixel) {
+  return 0.2126 * pixel.r + 0.7152 * pixel.g + 0.0722 * pixel.b;
+}
+
+inline float3 sLog2srgb(float3 sLog) {
+  return (pow(10.0, ((((sLog * 256.0 - 16.0) / 219.0) - 0.616596 - 0.03) / 0.432699)) - 0.037584) * 0.9;
+}
+
+inline float3 srgb2lin(float3 srgb) {
+  return srgb <= 0.04045 ? srgb / 12.92 : pow((srgb + 0.055) / 1.055, 2.4);
+}
+
+inline float3 lin2srgb(float3 lin) {
+  return lin <= 0.0031308 ? lin * 12.92 : (1.055 * pow(lin, 0.416667) - 0.055);
+}
+
+inline float3 bt2020to709(float3 bt2020) { // in linear space
+  return float3(
+    bt2020.r * 1.6605 + bt2020.g * -0.5876 + bt2020.b * -0.0728,
+    bt2020.r * -0.1246 + bt2020.g * 1.1329 + bt2020.b * -0.0083,
+    bt2020.r * -0.0182 + bt2020.g * -0.1006 + bt2020.b * 1.1187);
+}
+
+float4 main(float2 tex : TEXCOORD0) : COLOR {
+  float splitval = tex.x < 0.5 ? 0 : 1;
+  tex.x = (tex.x < 0.5 ? tex.x : tex.x - 0.5) * 2.0;
+  float3 pxval = tex2D(s0, tex).rgb;
+  float3 lin = bt2020to709(saturate(srgb2lin(sLog2srgb(pxval)))) * peakGain;
+  float3 highlight = lin - 1.0;
+  return lin2srgb(splitval < 0.5 ? lin : highlight).rgbb;
+}

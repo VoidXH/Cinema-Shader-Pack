@@ -1,12 +1,28 @@
 # Cinema Shader Pack
 HLSL shaders for projection corrections and dual-projector 3D/HDR.
 
-## Shader categories
-The supplied shaders can be grouped by the order they should be applied on the video. Each group has different usage rules. Any group can be skipped.
+## Table of contents
+1. How to use
+2. Shader categories
+3. HDR tutorial
+4. Licence
+
+## 1. How to use
+Copy the contents of the Shaders folder to the Shaders folder of a media player
+that supports HLSL, like MPC-HC. Go to the shader settings and add them before
+scaling.
+
+Some shaders can be configured. Open them with any text editor and modify the
+values under *Configuration* if it's present.
+
+## 2. Shader categories
+The supplied shaders can be grouped by the order they should be applied on the
+video. Only use the selected shaders in the order they appear here. Each group
+has different usage rules. Any group can be skipped.
 
 1. Splitters<br />
    Splitters create an image pair that can be dual-projected. Only one splitter can be applied in the shader chain.
-   * [S-Log to SDR + overexposure](./Shaders/S-Log%20to%20SDR%20+%20overexposure.hlsl): Try to get the SDR part of S-Log HDR content with overexposure as SBS 3D
+   * [HDR to SDR + overexposure](./Shaders/HDR%20to%20SDR%20+%20overexposure.hlsl): Try to get the SDR part of HDR content with overexposure as SBS 3D
 2. Split state corrections<br />
    These shaders process already split videos like 3D content, for multiple properties.
    * [Dual projector convergence - OU](./Shaders/Dual%20projector%20convergence%20-%20OU.hlsl): Simple projector convergence for over-under dual projection (3D or HDR)
@@ -32,11 +48,26 @@ The supplied shaders can be grouped by the order they should be applied on the v
    * [Gamma Correction](./Shaders/Gamma%20Correction.hlsl): Simple gamma correction
    * [Reframe](./Shaders/Reframe.hlsl): Keep content in the screen's largest given area by ratio
    * [Screen File](./Shaders/Screen%20File.hlsl): 6-point single projector geometry correction
-   * [S-Log to SDR](./Shaders/S-Log%20to%20SDR.hlsl): Try to get the SDR part of S-Log HDR content
+   * [HDR to SDR](./Shaders/HDR%20to%20SDR.hlsl): Try to get the SDR part of HDR content
 5. Warpers<br />
    Specific splitters for special setups, including triple projection.
    * [ScreenXizer - Cinerama](./Shaders/ScreenXizer%20-%20Cinerama.hlsl): Warp screen edges to side screens with cylinder wrapping
    * [ScreenXizer - Cubemap](./Shaders/ScreenXizer%20-%20Cubemap.hlsl): Warp screen edges to side screens with cube wrapping
 
-## Licence
-The source code is given to you for free, but without any warranty. It is not guaranteed to work, and the developer is not responsible for any damages from the use of the software. You are allowed to make any modifications, and release them for free. If you release a modified version, you have to link this repository as its source. You are not allowed to sell any part of the original or the modified version. You are also not allowed to show advertisements in the modified software. If you include these code or any part of the original version in any other project, these terms still apply.
+## 3. HDR tutorial
+The *HDR to SDR* shader works for both SDR conversion and limited to full HDR
+content display. The default configuration values are fine for regular displays,
+but you can set it up to actual HDR light values, up to 10000 nits. To get the
+most out of your screen, push the light output to the maximum and set the peak
+luminance accordingly. If you don't have a luminance meter, just set it to the
+largest value where the shadows look right.
+
+## 4. Licence
+The source code is given to you for free, but without any warranty. It is not
+guaranteed to work, and the developer is not responsible for any damages from
+the use of the software. You are allowed to make any modifications, and release
+them for free. If you release a modified version, you have to link this
+repository as its source. You are not allowed to sell any part of the original
+or the modified version. You are also not allowed to show advertisements in the
+modified software. If you include these code or any part of the original version
+in any other project, these terms still apply.
