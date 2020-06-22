@@ -45,10 +45,10 @@ has different usage rules. Any group can be skipped.
    * [Anaglyph 3D - SBS to trioscopic](./Shaders/Anaglyph%203D%20-%20SBS%20to%20trioscopic.hlsl): Prepare side-by-side 3D content for trioscopic glasses
 4. Corrections<br />
    Single-projector or merged image corrections for multiple properties.
+   * [HDR to SDR](./Shaders/HDR%20to%20SDR.hlsl): Try to get the SDR part of HDR content
    * [Gamma Correction](./Shaders/Gamma%20Correction.hlsl): Simple gamma correction
    * [Reframe](./Shaders/Reframe.hlsl): Keep content in the screen's largest given area by ratio
    * [Screen File](./Shaders/Screen%20File.hlsl): 6-point single projector geometry correction
-   * [HDR to SDR](./Shaders/HDR%20to%20SDR.hlsl): Try to get the SDR part of HDR content
 5. Warpers<br />
    Specific splitters for special setups, including triple projection.
    * [ScreenXizer - Cinerama](./Shaders/ScreenXizer%20-%20Cinerama.hlsl): Warp screen edges to side screens with cylinder wrapping
