@@ -46,6 +46,7 @@ has different usage rules. Any group can be skipped.
 4. Corrections<br />
    Single-projector or merged image corrections for multiple properties.
    * [HDR to SDR](./Shaders/HDR%20to%20SDR.hlsl): Try to get the SDR part of HDR content
+   * [HDR to SDR (vibrant)](./Shaders/HDR%20to%20SDR%20(vibrant).hlsl): HDR to SDR with a different, sometimes better looking compressor
    * [Gamma Correction](./Shaders/Gamma%20Correction.hlsl): Simple gamma correction
    * [Reframe](./Shaders/Reframe.hlsl): Keep content in the screen's largest given area by ratio
    * [Screen File](./Shaders/Screen%20File.hlsl): 6-point single projector geometry correction

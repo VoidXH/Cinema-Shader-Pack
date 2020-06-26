@@ -4,31 +4,30 @@
  / /   / / __ \/ _ \/ __ `__ \/ __ `/   \__ \/ __ \/ __ `/ __  / _ \/ ___/  / /_/ / __ `/ ___/ //_/
 / /___/ / / / /  __/ / / / / / /_/ /   ___/ / / / / /_/ / /_/ /  __/ /     / ____/ /_/ / /__/ ,<
 \____/_/_/ /_/\___/_/ /_/ /_/\__,_/   /____/_/ /_/\__,_/\__,_/\___/_/     /_/    \__,_/\___/_/|_|
-        http://en.sbence.hu/        Shader: Try to get the SDR part of HDR content
+        http://en.sbence.hu/        Shader: HDR to SDR with a different, sometimes better looking compressor
 */
 
 // Configuration ---------------------------------------------------------------
-const static float peakLuminance = 100.0; // Peak playback screen luminance in nits
-const static float kneeLuminance = 75.0; // Compression knee in luminance
-const static float compression = 1.0; // Compression ratio
-const static float maxCLL = 10000.0; // Maximum content light level in nits
+const static float peakLuminance = 200.0; // Peak playback screen luminance in nits
+const static float maxCLL = 1000.0; // Maximum content light level in nits
 const static float minMDL = 0.0; // Minimum mastering display luminance in nits
-const static float maxMDL = 10000.0; // Maximum mastering display luminance in nits
+const static float maxMDL = 1000.0; // Maximum mastering display luminance in nits
+const static float kneeLuminance = 50.0; // Largest uncompressed luminance in nits
 // -----------------------------------------------------------------------------
 
 // Precalculated values
 const static float linGain = maxCLL / peakLuminance * (maxMDL - minMDL) / maxMDL;
 const static float blackPoint = minMDL / maxMDL;
-const static float knee = kneeLuminance / maxCLL;
+const static float knee = kneeLuminance / peakLuminance;
 
 sampler s0;
 
-inline float peakGain(float3 pixel) {
-  return max(pixel.r, max(pixel.g, pixel.b));
+inline float luma(float3 pixel) {
+  return 0.2126 * pixel.r + 0.7152 * pixel.g + 0.0722 * pixel.b;
 }
 
 inline float3 sLog2srgb(float3 sLog) {
-  return (pow(10.0, ((((sLog * 256.0 - 16.0) / 219.0) - 0.616596 - 0.03) / 0.432699)) - 0.037584) / 10.8857;
+  return (pow(10.0, ((((sLog * 256.0 - 16.0) / 219.0) - 0.616596 - 0.03) / 0.432699)) - 0.037584) * 0.9;
 }
 
 inline float3 srgb2lin(float3 srgb) {
@@ -36,7 +35,7 @@ inline float3 srgb2lin(float3 srgb) {
 }
 
 inline float3 lin2srgb(float3 lin) {
-  return lin <= 0.0031308 ? lin * 12.92 : 1.055 * pow(lin, 0.416667) - 0.055;
+  return lin <= 0.0031308 ? lin * 12.92 : (1.055 * pow(lin, 0.416667) - 0.055);
 }
 
 inline float3 bt2020to709(float3 bt2020) { // in linear space
@@ -47,14 +46,15 @@ inline float3 bt2020to709(float3 bt2020) { // in linear space
 }
 
 inline float3 compress(float3 pixel) { // in linear space
-  float kneeMax = knee * linGain + blackPoint;
-  float strength = saturate((peakGain(pixel) - kneeMax) / ((linGain + blackPoint) - kneeMax));
-  return pixel / ((compression - 1) * strength + 1);
+  float3 dry = pixel * linGain + blackPoint;
+  float lm = luma(dry);
+  float t = pow(saturate((lm - knee) / (linGain - knee)), 0.5);
+  return dry * (1 - t) + pixel * t;
 }
 
 float4 main(float2 tex : TEXCOORD0) : COLOR {
   float3 pxval = tex2D(s0, tex).rgb;
-  float3 lin = bt2020to709(srgb2lin(sLog2srgb(pxval))) * linGain + blackPoint;
+  float3 lin = bt2020to709(srgb2lin(sLog2srgb(pxval)));
   float3 final = lin2srgb(compress(lin));
   return final.rgbb;
 }
