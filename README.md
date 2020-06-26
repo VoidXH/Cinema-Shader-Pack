@@ -57,8 +57,9 @@ has different usage rules. Any group can be skipped.
 ## 3. HDR tutorial
 The *HDR to SDR* shader works for both SDR conversion and limited to full HDR
 content display. The default configuration values are fine for regular displays,
-but you can set it up to actual HDR light values, up to 10000 nits. To get the
-most out of your screen, push the light output to the maximum and set the peak
+but you can set it up to actual HDR light values, even to luminance levels not
+supported by today's standards, making this shader future-proof. To get the most
+out of your screen, push the light output to the maximum and set the peak
 luminance accordingly. If you don't have a luminance meter, just set it to the
 largest value where the shadows look right.
 

@@ -8,11 +8,15 @@
 */
 
 // Configuration ---------------------------------------------------------------
-const static float peakLuminence = 200.0; // Peak playback screen luminance in nits
+const static float peakLuminance = 200.0; // Peak playback screen luminance in nits
+const static float maxCLL = 1000.0; // Maximum content light level in nits
+const static float minMDL = 0.0; // Minimum mastering display luminance in nits
+const static float maxMDL = 1000.0; // Maximum mastering display luminance in nits
 // -----------------------------------------------------------------------------
 
 // Precalculated values
-const static float peakGain = log(10000.0 / peakLuminence);
+const static float linGain = maxCLL / peakLuminance * (maxMDL - minMDL) / maxMDL;
+const static float blackPoint = minMDL / maxMDL;
 
 sampler s0;
 
@@ -43,7 +47,7 @@ float4 main(float2 tex : TEXCOORD0) : COLOR {
   float splitval = tex.x < 0.5 ? 0 : 1;
   tex.x = (tex.x < 0.5 ? tex.x : tex.x - 0.5) * 2.0;
   float3 pxval = tex2D(s0, tex).rgb;
-  float3 lin = bt2020to709(saturate(srgb2lin(sLog2srgb(pxval)))) * peakGain;
+  float3 lin = bt2020to709(saturate(srgb2lin(sLog2srgb(pxval)))) * linGain + blackPoint;
   float3 highlight = lin - 1.0;
   return lin2srgb(splitval < 0.5 ? lin : highlight).rgbb;
 }

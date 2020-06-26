@@ -8,12 +8,17 @@
 */
 
 // Configuration ---------------------------------------------------------------
-const static float peakLuminence = 200.0; // Peak playback screen luminance in nits
-const static float knee = 0.9; // Gain ratio where brightness reduction becomes aggressive
+const static float peakLuminance = 200.0; // Peak playback screen luminance in nits
+const static float maxCLL = 1000.0; // Maximum content light level in nits
+const static float minMDL = 0.0; // Minimum mastering display luminance in nits
+const static float maxMDL = 1000.0; // Maximum mastering display luminance in nits
+const static float kneeLuminance = 50.0; // Largest uncompressed luminance in nits
 // -----------------------------------------------------------------------------
 
 // Precalculated values
-const static float peakGain = log(10000.0 / peakLuminence);
+const static float linGain = maxCLL / peakLuminance * (maxMDL - minMDL) / maxMDL;
+const static float blackPoint = minMDL / maxMDL;
+const static float knee = kneeLuminance / peakLuminance;
 
 sampler s0;
 
@@ -40,10 +45,10 @@ inline float3 bt2020to709(float3 bt2020) { // in linear space
     bt2020.r * -0.0182 + bt2020.g * -0.1006 + bt2020.b * 1.1187);
 }
 
-inline float3 compress(float3 pixel) {
-  float3 dry = pixel * peakGain;
+inline float3 compress(float3 pixel) { // in linear space
+  float3 dry = pixel * linGain + blackPoint;
   float lm = luma(dry);
-  float t = pow(saturate((lm - knee) / (peakGain - knee)), 0.5);
+  float t = pow(saturate((lm - knee) / (linGain - knee)), 0.5);
   return dry * (1 - t) + pixel * t;
 }
 
