@@ -50,6 +50,7 @@ has different usage rules. Any group can be skipped.
    * [Gamma Correction](./Shaders/Gamma%20Correction.hlsl): Simple gamma correction
    * [Reframe](./Shaders/Reframe.hlsl): Keep content in the screen's largest given area by ratio
    * [Screen File](./Shaders/Screen%20File.hlsl): 6-point single projector geometry correction
+   * [Spot Correction](./Shaders/Spot%20Correction.hlsl): Corrects spots with incorrect colors
 5. Warpers<br />
    Specific splitters for special setups, including triple projection.
    * [ScreenXizer - Cinerama](./Shaders/ScreenXizer%20-%20Cinerama.hlsl): Warp screen edges to side screens with cylinder wrapping
