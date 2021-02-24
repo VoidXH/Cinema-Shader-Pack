@@ -4,26 +4,22 @@
  / /   / / __ \/ _ \/ __ `__ \/ __ `/   \__ \/ __ \/ __ `/ __  / _ \/ ___/  / /_/ / __ `/ ___/ //_/
 / /___/ / / / /  __/ / / / / / /_/ /   ___/ / / / / /_/ / /_/ /  __/ /     / ____/ /_/ / /__/ ,<
 \____/_/_/ /_/\___/_/ /_/ /_/\__,_/   /____/_/ /_/\__,_/\__,_/\___/_/     /_/    \__,_/\___/_/|_|
-        http://en.sbence.hu/        Shader: Try to get the SDR part of HDR content
+        http://en.sbence.hu/        Shader: Try to get the SDR part of S-Log HDR content
 */
 
 // Configuration ---------------------------------------------------------------
 const static float peakLuminance = 100.0; // Peak playback screen luminance in nits
-const static float knee = 0.75; // Compressor knee position
-const static float ratio = 5.0; // Compressor ratio: 1 = disabled, <1 = expander
+const static float kneeLuminance = 75.0; // Compression knee in luminance
+const static float compression = 1.0; // Compression ratio
 const static float maxCLL = 10000.0; // Maximum content light level in nits
+const static float minMDL = 0.0; // Minimum mastering display luminance in nits
+const static float maxMDL = 10000.0; // Maximum mastering display luminance in nits
 // -----------------------------------------------------------------------------
 
 // Precalculated values
-const static float gain = maxCLL / peakLuminance;
-const static float compressor = 1.0 / ratio;
-
-// PQ constants
-const static float m1inv = 16384 / 2610.0;
-const static float m2inv = 32 / 2523.0;
-const static float c1 = 3424 / 4096.0;
-const static float c2 = 2413 / 128.0;
-const static float c3 = 2392 / 128.0;
+const static float linGain = maxCLL / peakLuminance * (maxMDL - minMDL) / maxMDL;
+const static float blackPoint = minMDL / maxMDL;
+const static float knee = kneeLuminance / maxCLL;
 
 sampler s0;
 
@@ -31,15 +27,8 @@ inline float peakGain(float3 pixel) {
   return max(pixel.r, max(pixel.g, pixel.b));
 }
 
-inline float3 compress(float3 pixel) {
-  float gain = peakGain(pixel);
-  return pixel * (gain < knee ? gain : knee + max(gain - knee, 0) * compressor) / gain;
-}
-
-inline float3 pq2lin(float3 pq) { // Returns luminance in nits
-  float3 p = pow(pq, m2inv);
-  float3 d = max(p - c1, 0) / (c2 - c3 * p);
-  return pow(d, m1inv) * gain;
+inline float3 sLog2srgb(float3 sLog) {
+  return (pow(10.0, ((((sLog * 256.0 - 16.0) / 219.0) - 0.616596 - 0.03) / 0.432699)) - 0.037584) / 10.8857;
 }
 
 inline float3 srgb2lin(float3 srgb) {
@@ -57,9 +46,15 @@ inline float3 bt2020to709(float3 bt2020) { // in linear space
     bt2020.r * -0.0182 + bt2020.g * -0.1006 + bt2020.b * 1.1187);
 }
 
+inline float3 compress(float3 pixel) { // in linear space
+  float kneeMax = knee * linGain + blackPoint;
+  float strength = saturate((peakGain(pixel) - kneeMax) / ((linGain + blackPoint) - kneeMax));
+  return pixel / ((compression - 1) * strength + 1);
+}
+
 float4 main(float2 tex : TEXCOORD0) : COLOR {
   float3 pxval = tex2D(s0, tex).rgb;
-  float3 lin = bt2020to709(pq2lin(pxval));
+  float3 lin = bt2020to709(srgb2lin(sLog2srgb(pxval))) * linGain + blackPoint;
   float3 final = lin2srgb(compress(lin));
   return final.rgbb;
 }

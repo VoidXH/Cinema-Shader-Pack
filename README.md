@@ -48,6 +48,7 @@ has different usage rules. Any group can be skipped.
    * [Bottomizer](./Shaders/Bottomizer.hlsl): Move wide content to the bottom of the frame
    * [HDR to SDR](./Shaders/HDR%20to%20SDR.hlsl): Try to get the SDR part of HDR content
    * [HDR to SDR (vibrant)](./Shaders/HDR%20to%20SDR%20(vibrant).hlsl): HDR to SDR with a different, sometimes better looking compressor
+   * [HDR to SDR (S-Log)](./Shaders/HDR%20to%20SDR%20(S-Log).hlsl): Try to get the SDR part of S-Log HDR content
    * [Gamma Correction](./Shaders/Gamma%20Correction.hlsl): Simple gamma correction
    * [Reframe](./Shaders/Reframe.hlsl): Keep content in the screen's largest given area by ratio
    * [Screen File](./Shaders/Screen%20File.hlsl): 6-point single projector geometry correction
