@@ -9,8 +9,8 @@ HLSL shaders for projection corrections and dual-projector 3D/HDR.
 
 ## 1. How to use
 Copy the contents of the Shaders folder to the Shaders folder of a media player
-that supports HLSL, like MPC-HC. Go to the shader settings and add them before
-scaling.
+that supports HLSL, like MPC-HC. Go to the shader settings and add the selected
+ones as post-resize shaders.
 
 Some shaders can be configured. Open them with any text editor and modify the
 values under *Configuration* if it's present.
