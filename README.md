@@ -23,6 +23,7 @@ has different usage rules. Any group can be skipped.
 1. Splitters<br />
    Splitters create an image pair that can be dual-projected. Only one splitter can be applied in the shader chain.
    * [HDR to SDR + overexposure](./Shaders/HDR%20to%20SDR%20+%20overexposure.hlsl): Try to get the SDR part of HDR content with overexposure as SBS 3D
+   * [Resolution demo](./Shaders/Resolution%20demo.hlsl): Shows half resolution 4:2:0, 4:4:4, full resolution 4:2:0, and 4:4:4 in order
 2. Split state corrections<br />
    These shaders process already split videos like 3D content, for multiple properties.
    * [Dual projector convergence - OU](./Shaders/Dual%20projector%20convergence%20-%20OU.hlsl): Simple projector convergence for over-under dual projection (3D or HDR)
