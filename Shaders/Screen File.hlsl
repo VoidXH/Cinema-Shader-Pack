@@ -47,6 +47,9 @@ inline float4 getTex(float2 tex) {
 }
 
 float4 main(float2 tex : TEXCOORD0) : COLOR {
+  float heightCorrection = height / 1080; // MPC-HC reports 2160 pixel height when playing UHD on 1080p
+  tex.y *= heightCorrection;
+
   // Lens distortion
   float cx = tex.x - 0.5, cy = tex.y - 0.5, r = sqrt(cx * cx + cy * cy),
         mul = (1 + r * lensCorrection) * lensDistortClamp;
@@ -85,6 +88,8 @@ float4 main(float2 tex : TEXCOORD0) : COLOR {
   float heightScale = widthLeft * leftHeight + widthRight * rightHeight;
   float heightMargin = widthLeft * topLeftDown + widthRight * topRightDown;
   tex.y = heightScale * heightDown - heightMargin;
+  
+  tex.y /= heightCorrection;
 
   // Anti-aliased output with standard 8x MSAA pattern
   float2 px = float2(1.0 / width, 1.0 / height); // pixel size
