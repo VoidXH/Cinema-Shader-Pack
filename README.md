@@ -46,7 +46,7 @@ has different usage rules. Any group can be skipped.
    * [Anaglyph 3D - SBS to trioscopic](./Shaders/Anaglyph%203D%20-%20SBS%20to%20trioscopic.hlsl): Prepare side-by-side 3D content for trioscopic glasses
 4. Corrections<br />
    Single-projector or merged image corrections for multiple properties.
-   * [Black bar filler](./Shaders/Black bar filler.hlsl): Fill black bars by cylindrically warping the image
+   * [Black bar filler](./Shaders/Black%20bar%20filler.hlsl): Fill black bars by cylindrically warping the image
    * [Bottomizer](./Shaders/Bottomizer.hlsl): Move wide content to the bottom of the frame
    * [HDR to SDR](./Shaders/HDR%20to%20SDR.hlsl): Try to get the SDR part of HDR content
    * [HDR to SDR (vibrant)](./Shaders/HDR%20to%20SDR%20(vibrant).hlsl): HDR to SDR with a different, sometimes better looking compressor
